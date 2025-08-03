@@ -12,24 +12,28 @@ const Login = () => {
   const navigate = useNavigate(); // for redirect
 
 
-  const loginHandler = async (e) => {
-    e.preventDefault();
-    try {
-      const data = { email, password };
-      const res = await AuthServices.loginUser(data);
-      toast.success(res.data.message || "Login successful!");
+ const loginHandler = async (e) => {
+  e.preventDefault();
+  try {
+    const data = { email, password };
+    const res = await AuthServices.loginUser(data);
 
-      navigate('/home'); // redirect to home page after successful login
+    // Save token and user to localStorage
+    localStorage.setItem("todoapp", JSON.stringify({
+      token: res.data.token,
+      user: res.data.user,
+    }));
 
-      localStorage.setItem("todoapp",JSON.stringify(res.data));
-      console.log(res.data);// TODO: Add navigation or toast/notification here as needed
-    }
-     catch (err) {
-      toast.error(getErrorMessage(err));
-      console.error(err);
-      // TODO: Add error feedback for users here
-    }
-  };
+    toast.success(res.data.message || "Login successful!");
+    navigate('/home'); // redirect to home page
+
+    console.log("Login Response:", res.data);
+  } catch (err) {
+    toast.error(getErrorMessage(err));
+    console.error(err);
+  }
+};
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
