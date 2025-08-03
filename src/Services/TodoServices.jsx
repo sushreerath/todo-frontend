@@ -5,7 +5,8 @@ const user = JSON.parse(localStorage.getItem("todoapp"));
 
 // Create a custom Axios instance with baseURL and headers
 const API = axios.create({
-  baseURL: "http://localhost:8080/api/v1", // ✅ Corrected baseURL
+ baseURL: import.meta.env.VITE_API_BASE_URL + "/api/v1",
+ // ✅ Corrected baseURL
   headers: {
     Authorization: user?.token ? `Bearer ${user.token}` : "",
   },
